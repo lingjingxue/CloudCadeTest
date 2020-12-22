@@ -5,6 +5,8 @@ main.go:主函数入口
 chatmessage.go:聊天消息 ProfanityFilter PopularWord
 gameuser.go:用户 SetName Stats
 chatroom.go:用户列表 聊天信息列表
+trienode.go:trie树，用来实现ProfanityFilter功能
+test.go:测试
 
 2.命令
 

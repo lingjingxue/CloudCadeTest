@@ -8,6 +8,10 @@ import (
 )
 func main() {
 
+	ProfanityInit()
+	//TestProfanityInit()
+	TestProfanityFilter()
+
 	MapUser = make(map[string]GameUser)
 	QueueMessage = make([]ChatMessage, 0)
 

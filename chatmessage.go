@@ -14,12 +14,37 @@ type ChatMessage struct {
 
 //https://github.com/RobertJGabriel/Google-profanity-words/blob/ma ster/list.txt
 //网址无法访问 写了个测试的字符串
-var ProfanityWords = [] string {"Word0","Word1","Word2","Word3" }
+//var ProfanityWords = [] string {"Word0","Word1","Word2","Word3" }
+var ProfanityWords TrieNode
 
+//屏蔽字符串初始化
+func ProfanityInit() {
+	ProfanityWords = TrieNode{nil, false}
+
+	ProfanityWords.addWord("worda")
+	ProfanityWords.addWord("wordb")
+	ProfanityWords.addWord("wordc")
+	ProfanityWords.addWord("wordd")
+	ProfanityWords.addWord("worde")
+	//for i := 0; i < 10; i++ {
+	//	ProfanityWords.Insert("word" + string(i))
+	//}
+}
 //替换屏蔽字符串
 func ProfanityFilter(old string) string {
 	var text = old
-	for _, dword := range ProfanityWords {
+	//for _, dword := range ProfanityWords {
+	//	text = strings.Replace(text, dword, strings.Repeat("*", len(dword)), -1)
+	//}
+	var sliceProfanity []string = make([]string, 0)
+	var words = MessageSplitToWord(old)
+	for _, vk := range words {
+		isExist, existStr := ProfanityWords.isExist(vk)
+		if isExist {
+			sliceProfanity = append(sliceProfanity, existStr)
+		}
+	}
+	for _, dword := range sliceProfanity {
 		text = strings.Replace(text, dword, strings.Repeat("*", len(dword)), -1)
 	}
 	return text
@@ -38,8 +63,8 @@ func (user GameUser) Popular() {
 	}
 	var maxvalue = 0
 	for _, v := range QueueMessage {
-		var keys = MessageSplitToWord(v.Text)
-		for _, vk := range keys {
+		var words = MessageSplitToWord(v.Text)
+		for _, vk := range words {
 			var amount, ok = mapword [vk]
 			var count = 1
 			if ok {
